@@ -322,13 +322,13 @@ def create_parameter_fields(parent) -> dict:
     outer = tk.Frame(parent, bg=COLORS["bg_card"],
                      highlightbackground=COLORS["border"],
                      highlightthickness=1)
-    outer.pack(fill="x", padx=12, pady=(0, 8))
+    outer.pack(fill="x", padx=10, pady=(0, 3))
 
     SectionHeader(outer, "Parametros de la llave").pack(
-        fill="x", padx=12, pady=(10, 6))
+        fill="x", padx=10, pady=(7, 4))
 
     row_frame = tk.Frame(outer, bg=COLORS["bg_card"])
-    row_frame.pack(fill="x", padx=12, pady=(0, 12))
+    row_frame.pack(fill="x", padx=10, pady=(0, 8))
 
     defaults = {
         "A":       ("A",       "0.25"),
@@ -341,12 +341,12 @@ def create_parameter_fields(parent) -> dict:
     fields = {}
     for i, (key, (symbol, default)) in enumerate(defaults.items()):
         cell = tk.Frame(row_frame, bg=COLORS["bg_card"])
-        cell.pack(side="left", expand=True, fill="x", padx=5)
+        cell.pack(side="left", expand=True, fill="x", padx=4)
 
         tk.Label(cell, text=symbol,
                  bg=COLORS["bg_card"],
                  fg=COLORS["accent2"],
-                 font=FONTS["param_lbl"]).pack(anchor="w", pady=(0, 3))
+                 font=FONTS["param_lbl"]).pack(anchor="w", pady=(0, 2))
 
         var = tk.StringVar(value=default)
         entry = tk.Entry(cell,
@@ -359,7 +359,7 @@ def create_parameter_fields(parent) -> dict:
                          highlightbackground=COLORS["border"],
                          highlightthickness=2,
                          font=FONTS["mono"])
-        entry.pack(fill="x", ipady=4)
+        entry.pack(fill="x", ipady=3)
 
         # Efecto focus
         entry.bind("<FocusIn>",  lambda e, w=entry: w.config(
@@ -463,13 +463,13 @@ class CryptoTab(ttk.Frame):
         outer = tk.Frame(self, bg=COLORS["bg_card"],
                          highlightbackground=COLORS["border"],
                          highlightthickness=1)
-        outer.pack(fill="x", padx=12, pady=(12, 4))
+        outer.pack(fill="x", padx=10, pady=(8, 3))
 
         SectionHeader(outer, "Imagen de entrada").pack(
-            fill="x", padx=12, pady=(10, 6))
+            fill="x", padx=10, pady=(7, 4))
 
         row = tk.Frame(outer, bg=COLORS["bg_card"])
-        row.pack(fill="x", padx=12, pady=(0, 12))
+        row.pack(fill="x", padx=10, pady=(0, 8))
 
         self.btn_open = ttk.Button(row,
                                    text="  Abrir archivo...",
@@ -489,7 +489,7 @@ class CryptoTab(ttk.Frame):
 
     def _build_action_bar(self, action_label: str) -> None:
         bar = tk.Frame(self, bg=COLORS["bg_panel"])
-        bar.pack(fill="x", padx=12, pady=(0, 8))
+        bar.pack(fill="x", padx=10, pady=(0, 5))
 
         self.btn_action = ttk.Button(bar,
                                      text=f"  {action_label}  ",
@@ -512,18 +512,15 @@ class CryptoTab(ttk.Frame):
                                 bg=COLORS["bg_card"],
                                 highlightbackground=COLORS["border"],
                                 highlightthickness=1)
-        canvas_outer.pack(fill="both", expand=True, padx=12, pady=(0, 12))
+        canvas_outer.pack(fill="both", expand=True, padx=10, pady=(0, 8))
 
-        SectionHeader(canvas_outer, "Visualizacion").pack(
-            fill="x", padx=12, pady=(10, 6))
-
-        self.figure = Figure(figsize=(10, 5.5), dpi=100,
+        self.figure = Figure(figsize=(10, 6), dpi=100,
                              facecolor=COLORS["bg_card"])
         self.canvas = FigureCanvasTkAgg(self.figure, master=canvas_outer)
         widget = self.canvas.get_tk_widget()
         widget.configure(bg=COLORS["bg_card"],
                          highlightthickness=0)
-        widget.pack(fill="both", expand=True, padx=4, pady=(0, 8))
+        widget.pack(fill="both", expand=True, padx=2, pady=2)
 
         # Placeholder inicial
         ax = self.figure.add_subplot(1, 1, 1)
@@ -624,40 +621,40 @@ class CryptoTab(ttk.Frame):
 # =========================================================================
 
 class AppHeader(tk.Frame):
-    """Barra de encabezado con titulo, subtitulo y separador."""
+    """Barra de encabezado compacta con titulo en una sola linea."""
 
     def __init__(self, parent, **kwargs):
         super().__init__(parent, bg=COLORS["bg_deep"], **kwargs)
 
         inner = tk.Frame(self, bg=COLORS["bg_deep"])
-        inner.pack(fill="x", padx=24, pady=(18, 16))
+        inner.pack(fill="x", padx=20, pady=(9, 8))
 
-        # Bloque de titulo
-        title_block = tk.Frame(inner, bg=COLORS["bg_deep"])
-        title_block.pack(side="left")
-
-        # Pastilla de version / badge
-        badge = tk.Frame(title_block, bg=COLORS["accent"],
-                         padx=8, pady=3)
-        badge.pack(side="left", anchor="n", padx=(0, 12), pady=(6, 0))
+        # Badge de version
+        badge = tk.Frame(inner, bg=COLORS["accent"], padx=7, pady=2)
+        badge.pack(side="left", anchor="center", padx=(0, 12))
         tk.Label(badge, text="v1.0",
                  bg=COLORS["accent"], fg="#fff",
                  font=FONTS["badge"]).pack()
 
-        text_block = tk.Frame(title_block, bg=COLORS["bg_deep"])
-        text_block.pack(side="left")
-
-        tk.Label(text_block,
+        # Titulo
+        tk.Label(inner,
                  text="Cifrado de Imagenes",
                  bg=COLORS["bg_deep"],
                  fg=COLORS["text_primary"],
-                 font=FONTS["title"]).pack(anchor="w")
+                 font=(FONT_FAMILY, 14, "bold")).pack(side="left", anchor="center")
 
-        tk.Label(text_block,
-                 text="Adveccion caotica — Double Gyre Flow",
+        # Separador vertical decorativo
+        tk.Label(inner, text="  |  ",
                  bg=COLORS["bg_deep"],
-                 fg=COLORS["text_secondary"],
-                 font=FONTS["subtitle"]).pack(anchor="w")
+                 fg=COLORS["text_muted"],
+                 font=(FONT_FAMILY, 13)).pack(side="left", anchor="center")
+
+        # Subtitulo en la misma linea
+        tk.Label(inner,
+                 text="Double Gyre Chaotic Advection",
+                 bg=COLORS["bg_deep"],
+                 fg=COLORS["text_muted"],
+                 font=(FONT_FAMILY, 10)).pack(side="left", anchor="center")
 
         Divider(self).pack(fill="x")
 
